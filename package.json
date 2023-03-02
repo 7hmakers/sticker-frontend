@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "element-plus": "^2.2.32",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-cropperjs": "^5.0.0"
   },
   "devDependencies": {
     "@so1ve/eslint-config": "^0.45.3",
