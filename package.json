@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "element-plus": "^2.2.32",
     "vue": "^3.2.47"
   },
   "devDependencies": {

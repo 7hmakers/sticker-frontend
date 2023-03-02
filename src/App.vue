@@ -3,7 +3,7 @@
 
 <template>
   <main>
-    1
+    <ElButton>Default</ElButton>
   </main>
 </template>
 
