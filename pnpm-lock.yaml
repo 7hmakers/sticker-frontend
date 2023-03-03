@@ -4,6 +4,7 @@ specifiers:
   '@iconify-json/carbon': ^1.1.16
   '@so1ve/eslint-config': ^0.45.3
   '@types/node': ^18.14.2
+  '@types/vue-cropperjs': ^4.1.2
   '@unocss/preset-rem-to-px': ^0.50.3
   '@unocss/reset': ^0.50.3
   '@vitejs/plugin-vue': ^4.0.0
@@ -31,6 +32,7 @@ devDependencies:
   '@iconify-json/carbon': 1.1.16
   '@so1ve/eslint-config': 0.45.3_4i7pqkuy6izscdzr2hpyziu3pe
   '@types/node': 18.14.3
+  '@types/vue-cropperjs': 4.1.2
   '@unocss/preset-rem-to-px': 0.50.3
   '@unocss/reset': 0.50.3
   '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
@@ -852,6 +854,12 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
+  /@types/vue-cropperjs/4.1.2:
+    resolution: {integrity: sha512-w+I4SFQvpLM2H3n+pXq9b1Y6mENcoOQ+UvQTRlfeOFe9+cyEmfP7FMwCmUvA+83GPhu/+1F8Ik0/wURv7Dop7Q==}
+    dependencies:
+      vue: 2.7.14
+    dev: true
+
   /@types/web-bluetooth/0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
     dev: false
@@ -1229,6 +1237,14 @@ packages:
     dependencies:
       '@vue/compiler-core': 3.2.47
       '@vue/shared': 3.2.47
+
+  /@vue/compiler-sfc/2.7.14:
+    resolution: {integrity: sha512-aNmNHyLPsw+sVvlQFQ2/8sjNuLtK54TC6cuKnVzAY93ks4ZBrvwQSnkkIh7bsbNhum5hJBS00wSDipQ937f5DA==}
+    dependencies:
+      '@babel/parser': 7.21.2
+      postcss: 8.4.21
+      source-map: 0.6.1
+    dev: true
 
   /@vue/compiler-sfc/3.2.47:
     resolution: {integrity: sha512-rog05W+2IFfxjMcFw10tM9+f7i/+FFpZJJ5XHX72NP9eC2uRD+42M3pYcQqDXVYoj74kHMSEdQ/WmCjt8JFksQ==}
@@ -1670,6 +1686,10 @@ packages:
 
   /csstype/2.6.21:
     resolution: {integrity: sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==}
+
+  /csstype/3.1.1:
+    resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
+    dev: true
 
   /dayjs/1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
@@ -4308,6 +4328,13 @@ packages:
       '@volar/vue-language-core': 1.2.0
       '@volar/vue-typescript': 1.2.0
       typescript: 4.8.4
+    dev: true
+
+  /vue/2.7.14:
+    resolution: {integrity: sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==}
+    dependencies:
+      '@vue/compiler-sfc': 2.7.14
+      csstype: 3.1.1
     dev: true
 
   /vue/3.2.47:
