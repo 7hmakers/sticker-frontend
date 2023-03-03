@@ -60,9 +60,8 @@ const onExceed: UploadProps["onExceed"] = (files) => {
 };
 
 const onChange = async (file: UploadFile) => {
-  imageUrl.value = await fileToBlobURL(file.raw!);
-  console.log(imageUrl.value);
   cropperVisible.value = true;
+  imageUrl.value = await fileToBlobURL(file.raw!);
 };
 
 const onCancelUpload = () => {
