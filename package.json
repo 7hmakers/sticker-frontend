@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@vueuse/core": "^9.13.0",
     "element-plus": "^2.2.32",
     "pinyin-pro": "^3.13.1",
     "vue": "^3.2.47",

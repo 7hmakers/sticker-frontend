@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import type { FormRules, UploadFile, UploadInstance, UploadProps, UploadRawFile, UploadUserFile } from "element-plus";
 import { genFileId } from "element-plus";
 import { pinyin } from "pinyin-pro";
 
-import { fileToBlobURL } from "./utils";
+import { base64ToFile, fileToBuffer } from "./utils";
 
+const cropperRef = ref();
 const cropperVisible = ref(false);
 
 const birthData = reactive({
@@ -15,6 +17,8 @@ const birthData = reactive({
   day: "",
 });
 
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smallerOrEqual("md");
 const birth = computed(() => `${birthData.year}.${birthData.month}.${birthData.day}`);
 
 const form = reactive({
@@ -27,7 +31,7 @@ const form = reactive({
 });
 
 const imageList = ref<UploadUserFile[]>([]);
-const imageUrl = ref("");
+const imageUrl = ref("" as any);
 
 const UID_PATTERN = /^[A-Z0-9\-]*$/;
 const BIRTH_PATTERN = /^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$/;
@@ -61,7 +65,10 @@ const onExceed: UploadProps["onExceed"] = (files) => {
 
 const onChange = async (file: UploadFile) => {
   cropperVisible.value = true;
-  imageUrl.value = await fileToBlobURL(file.raw!);
+  await nextTick();
+  const result = await fileToBuffer(file.raw!);
+  imageUrl.value = result;
+  cropperRef.value.replace(result);
 };
 
 const onCancelUpload = () => {
@@ -73,6 +80,13 @@ const onInputName = () => {
   if (!isPinyinModified.value) {
     form.pinyin = pinyin(form.name);
   }
+};
+
+const onCrop = () => {
+  const file = base64ToFile(cropperRef.value.getCroppedCanvas().toDataURL()) as any as UploadFile;
+  file.uid = genFileId();
+  (imageList.value[0].raw as any) = file;
+  cropperVisible.value = false;
 };
 
 const onPinyinModified = () => {
@@ -136,15 +150,20 @@ const onPinyinModified = () => {
       <ElDialog
         v-model="cropperVisible"
         align-center
-        class=""
+        :fullscreen="isMobile"
         :show-close="false"
-        title="Warning"
+        title="裁剪"
       >
-        <VueCropper :src="imageUrl" />
+        <VueCropper
+          ref="cropperRef"
+          alt="裁剪"
+          :aspect-ratio="19.32 / 23.59"
+          :src="imageUrl"
+        />
         <template #footer>
           <span class="dialog-footer">
             <ElButton @click="onCancelUpload">取消</ElButton>
-            <ElButton type="primary" @click="cropperVisible = false">
+            <ElButton type="primary" @click="onCrop">
               确认
             </ElButton>
           </span>
