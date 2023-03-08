@@ -158,7 +158,7 @@ const onSubmit = async () => {
   const resp = await fetch(`${import.meta.env.VITE_API_URL}sticker_submit`, {
     method: "POST",
     body: JSON.stringify({
-      key,
+      key: key.value,
       style: form.style,
       name: form.name,
       pinyin: form.pinyin,
