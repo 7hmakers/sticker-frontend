@@ -133,7 +133,7 @@ const uploadImage = async () => {
   if (image) {
     formData.append("file", image);
   }
-  const resp = await fetch(`${import.meta.env.VITE_API_URL}upload_image?key=${key}`, {
+  const resp = await fetch(`${import.meta.env.VITE_API_URL}upload_image?key=${key.value}`, {
     method: "POST",
     body: formData,
   }).then(r => r.json());
