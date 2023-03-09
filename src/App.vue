@@ -52,6 +52,8 @@ const isStyleC = computed(() => form.style === "C");
 const imageList = ref<UploadUserFile[]>([]);
 const imageUrl = ref("") as Ref<any>;
 
+const isUploaded = computed(() => !!imageList.value?.[0]?.raw);
+
 const UID_PATTERN = /^[A-Z0-9\-]{25}$/;
 const BIRTH_PATTERN = /^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$/;
 const DOTDOT = "..";
@@ -287,3 +289,9 @@ const onSubmit = async () => {
     </ElCard>
   </main>
 </template>
+
+<style>
+.el-upload {
+  display: v-bind(isUploaded ? "none" : "block") !important;
+}
+</style>
