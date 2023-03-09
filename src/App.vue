@@ -41,7 +41,13 @@ const form = reactive({
   birth,
 });
 
-const shouldUploadImage = computed(() => form.style === "C");
+watch(() => form.uid, (val) => {
+  if (val) {
+    form.uid = val.toUpperCase();
+  }
+});
+
+const isStyleC = computed(() => form.style === "C");
 
 const imageList = ref<UploadUserFile[]>([]);
 const imageUrl = ref("") as Ref<any>;
@@ -54,11 +60,11 @@ const rules = reactive<FormRules>({
   uid: {
     pattern: UID_PATTERN,
     message: "25位，可包含大写字母、数字或\"-\"",
-    trigger: "blur",
+    trigger: "change",
   },
   birth: {
     message: "格式为YYYY.MM.DD",
-    trigger: "blur",
+    trigger: "change",
     validator: (_, data) => {
       return data === DOTDOT || BIRTH_PATTERN.test(data);
     },
@@ -129,11 +135,11 @@ const validate = async () => {
 
 const uploadImage = async () => {
   const formData = new FormData();
-  const image = imageList.value[0].raw;
+  const image = imageList.value?.[0]?.raw;
   if (image) {
     formData.append("file", image);
   }
-  const resp = await fetch(`${import.meta.env.VITE_API_URL}upload_image?key=${key}`, {
+  const resp = await fetch(`${import.meta.env.VITE_API_URL}upload_image?key=${key.value}`, {
     method: "POST",
     body: formData,
   }).then(r => r.json());
@@ -146,7 +152,7 @@ const onSubmit = async () => {
   }
   isUploading.value = true;
   let filename: string | undefined;
-  if (shouldUploadImage.value) {
+  if (isStyleC.value) {
     const imageResp = await uploadImage();
     if (!imageResp.success && imageResp.message !== "file already exist") {
       ElMessage.error(imageResp.message);
@@ -178,7 +184,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <main class="flex flex-col h-full items-center justify-center p-5">
+  <main class="flex flex-col items-center justify-center min-h-full p-5">
     <ElCard class="md:w-130 w-full">
       <ElAlert
         class="mb-3!"
@@ -222,7 +228,7 @@ const onSubmit = async () => {
         <ElFormItem label="UID号" prop="uid">
           <ElInput v-model="form.uid" clearable placeholder="留空默认随机" />
         </ElFormItem>
-        <ElFormItem label="出生日期" prop="birth">
+        <ElFormItem v-if="isStyleC" label="出生日期" prop="birth">
           <div class="flex gap-2">
             <ElInput v-model="birthData.year" placeholder="年（四位数字）" />.
             <ElInput v-model="birthData.month" placeholder="月（二位数字）" />.
@@ -231,7 +237,7 @@ const onSubmit = async () => {
         </ElFormItem>
         <!-- eslint-disable vue/no-v-model-argument -->
         <ElUpload
-          v-if="shouldUploadImage"
+          v-if="isStyleC"
           v-model:file-list="imageList"
           ref="uploadRef"
           accept="image/png,image/jpeg"
