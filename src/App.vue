@@ -7,6 +7,7 @@ import { ElMessage, genFileId } from "element-plus";
 import "element-plus/es/components/message/style/css";
 import { pinyin } from "pinyin-pro";
 
+import previewImage from "./img/preview.png";
 import { base64ToFile, fileToBuffer } from "./utils";
 
 enum STYLES {
@@ -18,6 +19,7 @@ enum STYLES {
 const formInstance = ref<FormInstance | null>(null);
 const cropperRef = ref();
 const cropperVisible = ref(false);
+const previewVisible = ref(false);
 const isUploading = ref(false);
 
 const birthData = reactive({
@@ -208,18 +210,23 @@ const onSubmit = async () => {
           <ElInput v-model="key" :disabled="hasParamKey" />
         </ElFormItem>
         <ElFormItem label="样式" required>
-          <ElSelect
-            v-model="form.style"
-            class="w-full"
-            placeholder="选择样式"
-          >
-            <ElOption
-              v-for="(name, styleKey) in STYLES"
-              :key="styleKey"
-              :label="name"
-              :value="styleKey"
-            />
-          </ElSelect>
+          <div class="flex gap-3 w-full">
+            <ElSelect
+              v-model="form.style"
+              class="w-full"
+              placeholder="选择样式"
+            >
+              <ElOption
+                v-for="(name, styleKey) in STYLES"
+                :key="styleKey"
+                :label="name"
+                :value="styleKey"
+              />
+            </ElSelect>
+            <ElButton circle @click="previewVisible = true">
+              <span class="i-carbon:help" />
+            </ElButton>
+          </div>
         </ElFormItem>
         <ElFormItem label="姓名" required>
           <ElInput v-model="form.name" clearable @input="onInputName" />
@@ -254,7 +261,7 @@ const onSubmit = async () => {
             <span class="i-carbon:add-filled" />
           </ElIcon>
           <div class="el-upload__text">
-            拖拽文件到此处，或<em>点击上传</em>
+            拖拽图片到此处，或<em>点击上传</em>
           </div>
         </ElUpload>
         <div class="flex justify-between">
@@ -264,6 +271,16 @@ const onSubmit = async () => {
           </ElButton>
         </div>
       </ElForm>
+      <ElDialog
+        v-model="previewVisible"
+        align-center
+        fullscreen
+        title="预览"
+      >
+        <div class="flex justify-center">
+          <img :src="previewImage">
+        </div>
+      </ElDialog>
       <ElDialog
         v-model="cropperVisible"
         align-center
